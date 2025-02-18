@@ -23,3 +23,19 @@ public sealed class AddressTests
         Assert.True(Math.Abs(there - back) < 0.001);
     }
 
+    [Fact]
+    public void BelfastToDublinIsAboutOneHundredAndFortyKilometres()
+    {
+        var distance = CityHall.DistanceKmTo(Dublin);
+
+        Assert.InRange(distance, 130, 150);
+    }
+
+    [Fact]
+    public void ShortDistancesKeepSubKilometrePrecision()
+    {
+        var distance = CityHall.DistanceKmTo(Botanic);
+
+        Assert.InRange(distance, 0.1, 3.0);
+    }
+
