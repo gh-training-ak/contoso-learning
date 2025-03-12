@@ -6,3 +6,4 @@ reversed gets a new record that supersedes the old one, and the old one is marke
 | Number | Decision | Status |
 | --- | --- | --- |
 | [0001](0001-terraform-over-portal.md) | Terraform owns the infrastructure | Accepted |
+| [0002](0002-sql-over-cosmos.md) | Azure SQL rather than Cosmos DB | Accepted |
