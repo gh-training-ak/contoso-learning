@@ -1,0 +1,41 @@
+name: Feature request
+description: Propose a change to behaviour.
+title: "[feature]: "
+labels: [kind/feature, status/triage]
+
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: Describe the user problem, not the solution you have in mind.
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposal
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+
+  - type: dropdown
+    id: breaking
+    attributes:
+      label: Does this break the public API contract?
+      options: ['No', 'Yes', 'Not sure']
+    validations:
+      required: true
+
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      value: |
+        - [ ]
+        - [ ]

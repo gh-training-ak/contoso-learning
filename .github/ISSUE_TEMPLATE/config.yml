@@ -1,0 +1,12 @@
+blank_issues_enabled: false
+
+contact_links:
+  - name: Question or discussion
+    url: https://github.com/gh-training-ak/contoso-learning/discussions
+    about: Ask the team before opening an issue.
+  - name: Security vulnerability
+    url: https://github.com/gh-training-ak/contoso-learning/security/advisories/new
+    about: Report privately. Never open a public issue for a vulnerability.
+  - name: Internal runbook
+    url: https://github.com/gh-training-ak/contoso-learning/wiki
+    about: On call procedures and architecture decisions.
