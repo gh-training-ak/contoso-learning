@@ -1,0 +1,9 @@
+# Ownership is by directory. The last matching rule wins, so order matters.
+
+*                               @gh-training-ak/platform-team
+
+/src/                           @gh-training-ak/backend-team
+/web/                           @gh-training-ak/frontend-team
+/database/                      @gh-training-ak/data-team
+/infra/                         @gh-training-ak/platform-team
+/.github/workflows/             @gh-training-ak/platform-team
