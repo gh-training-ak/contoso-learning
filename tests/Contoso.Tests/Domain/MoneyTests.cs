@@ -32,3 +32,9 @@ public sealed class MoneyTests
         Assert.Equal(expected, new Money(amount).Multiply(factor).Amount);
     }
 
+    [Fact]
+    public void ToStringIncludesCurrency()
+    {
+        Assert.Equal("22.50 GBP", new Money(22.5m).ToString());
+    }
+}
