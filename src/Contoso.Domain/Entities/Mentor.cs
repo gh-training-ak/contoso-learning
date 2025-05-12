@@ -10,7 +10,7 @@ public sealed class Mentor : Entity
     public string? PhoneNumber { get; set; }
     public string? Biography { get; set; }
     public Address? Address { get; set; }
-    public decimal HourlyRate { get; set; }
+    public Money HourlyRate { get; set; } = Money.Zero;
     public bool AcceptsOnline { get; set; } = true;
     public bool AcceptsInPerson { get; set; }
 
