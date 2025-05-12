@@ -12,7 +12,7 @@ public readonly record struct Money(decimal Amount, string Currency = "GBP")
         return this with { Amount = Amount + other.Amount };
     }
 
-    public Money Multiply(decimal factor) => this with { Amount = Math.Round(Amount * factor, 2, MidpointRounding.AwayFromZero) };
+    public Money Multiply(decimal factor) => this with { Amount = Math.Round(Amount * factor, 2) };
 
     private void EnsureSameCurrency(Money other)
     {
