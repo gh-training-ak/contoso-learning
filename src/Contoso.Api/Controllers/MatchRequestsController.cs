@@ -29,7 +29,7 @@ public sealed class MatchRequestsController(MatchRequestService requests) : Cont
         }
         catch (DomainException ex)
         {
-            return Conflict(new ProblemDetails { Title = "Request rejcted", Detail = ex.Message });
+            return Conflict(new ProblemDetails { Title = "Request rejected", Detail = ex.Message });
         }
     }
 
