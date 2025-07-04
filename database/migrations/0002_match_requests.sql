@@ -18,8 +18,10 @@ CREATE TABLE learning.MatchRequest
 );
 GO
 
+-- One open request per student and mentor pair. Filtered so history is unconstrained.
 CREATE UNIQUE INDEX UX_MatchRequest_OnePending
-    ON learning.MatchRequest (StudentId, MentorId);
+    ON learning.MatchRequest (StudentId, MentorId)
+    WHERE Status = 0;
 GO
 
 CREATE INDEX IX_MatchRequest_Mentor_Status
