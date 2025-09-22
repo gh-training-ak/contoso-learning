@@ -9,7 +9,8 @@ CREATE TABLE learning.Review
 
     CONSTRAINT FK_Review_Mentor  FOREIGN KEY (MentorId)  REFERENCES learning.Mentor (MentorId),
     CONSTRAINT FK_Review_Student FOREIGN KEY (StudentId) REFERENCES learning.Student (StudentId),
-    CONSTRAINT CK_Review_Rating  CHECK (Rating BETWEEN 1 AND 5)
+    CONSTRAINT CK_Review_Rating  CHECK (Rating BETWEEN 1 AND 5),
+    CONSTRAINT UQ_Review_OnePerPair UNIQUE (MentorId, StudentId)
 );
 GO
 
