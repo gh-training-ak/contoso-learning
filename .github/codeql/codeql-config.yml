@@ -1,0 +1,13 @@
+name: Contoso CodeQL configuration
+
+queries:
+  - uses: security-and-quality
+
+paths:
+  - src
+  - web/src
+
+paths-ignore:
+  - tests
+  - '**/*.spec.ts'
+  - web/src/environments
