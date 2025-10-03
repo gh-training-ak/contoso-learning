@@ -1,0 +1,20 @@
+version: 2
+
+updates:
+  - package-ecosystem: nuget
+    directory: /
+    schedule:
+      interval: weekly
+    labels: [dependencies, area/api]
+
+  - package-ecosystem: npm
+    directory: /web
+    schedule:
+      interval: weekly
+    labels: [dependencies, area/web]
+
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    labels: [dependencies, area/ci]
