@@ -3,6 +3,12 @@
 Notable changes per release. Generated notes live on the GitHub releases page, this
 file carries the summary and the migration notes.
 
+## [2.1.0] - 2025-11-18
+
+### Added
+- Review submission with a completed match requirement (#211)
+- Mentor rating view in SQL (#214)
+
 ## [2.0.0] - 2025-08-27
 
 ### Breaking
