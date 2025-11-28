@@ -1,0 +1,50 @@
+name: Incident
+description: Record a production incident and its follow up.
+title: "[incident]: "
+labels: [kind/incident, priority/p1]
+assignees: [AmarKayed]
+
+body:
+  - type: input
+    id: detected
+    attributes:
+      label: Detected at (UTC)
+      placeholder: 2026-03-14 08:41
+    validations:
+      required: true
+
+  - type: dropdown
+    id: severity
+    attributes:
+      label: Severity
+      options:
+        - Sev1 service down
+        - Sev2 major degradation
+        - Sev3 minor degradation
+    validations:
+      required: true
+
+  - type: textarea
+    id: impact
+    attributes:
+      label: Customer impact
+    validations:
+      required: true
+
+  - type: textarea
+    id: timeline
+    attributes:
+      label: Timeline
+      value: |
+        | Time (UTC) | Event |
+        | --- | --- |
+        |  |  |
+
+  - type: textarea
+    id: actions
+    attributes:
+      label: Follow up actions
+      value: |
+        - [ ] Link the fix pull request
+        - [ ] Add a regression test
+        - [ ] Update the runbook
