@@ -1,4 +1,5 @@
 using Contoso.Application.Abstractions;
+using Contoso.Application.Common;
 using Contoso.Domain.Entities;
 using Contoso.Domain.ValueObjects;
 
@@ -6,19 +7,31 @@ namespace Contoso.Application.Mentors;
 
 public sealed class MentorSearchService(IMentorRepository repository)
 {
-    public async Task<IReadOnlyList<MentorSearchResult>> SearchAsync(
+    public const int MaxPageSize = 100;
+    public async Task<PagedResult<MentorSearchResult>> SearchAsync(
         MentorSearchCriteria criteria, CancellationToken ct = default)
     {
         ArgumentNullException.ThrowIfNull(criteria);
 
-        var mentors = await repository.SearchAsync(criteria, ct);
+        if (criteria.PageSize is < 1 or > MaxPageSize)
+        {
+            throw new ArgumentOutOfRangeException(
+                nameof(criteria), $"PageSize must be between 1 and {MaxPageSize}.");
+        }
 
-        return mentors
+        var mentors = await repository.SearchAsync(criteria, ct);
+        var total = await repository.CountAsync(criteria, ct);
+
+        var items = mentors
             .Where(m => m.IsActive)
             .Select(m => Project(m, criteria.Near))
             .Where(r => criteria.MinimumRating is null || r.Rating >= criteria.MinimumRating)
+            .Where(r => criteria.WithinKm is null || r.DistanceKm is null || r.DistanceKm <= criteria.WithinKm)
             .OrderByDescending(r => r.Rating)
+            .ThenBy(r => r.DistanceKm ?? double.MaxValue)
             .ToList();
+
+        return new PagedResult<MentorSearchResult>(items, criteria.Page, criteria.PageSize, total);
     }
 
     private static MentorSearchResult Project(Mentor mentor, Address? origin) => new(

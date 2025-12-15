@@ -11,4 +11,6 @@ public sealed record MentorSearchCriteria
     public decimal? MinimumRating { get; init; }
     public Address? Near { get; init; }
     public double? WithinKm { get; init; }
+    public int Page { get; init; } = 1;
+    public int PageSize { get; init; } = 20;
 }
