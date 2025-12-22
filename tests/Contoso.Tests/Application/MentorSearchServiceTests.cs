@@ -32,11 +32,26 @@ public sealed class MentorSearchServiceTests
     }
 
     [Fact]
-    public async Task EmptyRepositoryReturnsNoResults()
+    public async Task EmptyRepositoryReturnsEmptyPage()
     {
         var (service, _) = Build();
 
-        Assert.Empty(await service.SearchAsync(new MentorSearchCriteria()));
+        var result = await service.SearchAsync(new MentorSearchCriteria());
+
+        Assert.Empty(result.Items);
+        Assert.Equal(0, result.Total);
+    }
+
+    [Theory]
+    [InlineData(0)]
+    [InlineData(101)]
+    [InlineData(-5)]
+    public async Task InvalidPageSizeThrows(int pageSize)
+    {
+        var (service, _) = Build();
+
+        await Assert.ThrowsAsync<ArgumentOutOfRangeException>(
+            () => service.SearchAsync(new MentorSearchCriteria { PageSize = pageSize }));
     }
 
     [Fact]
@@ -45,9 +60,9 @@ public sealed class MentorSearchServiceTests
         var (service, repo) = Build();
         repo.Seed(Mentor("Low Rated", 20m, 3, 3), Mentor("High Rated", 20m, 5, 5));
 
-        var results = await service.SearchAsync(new MentorSearchCriteria());
+        var result = await service.SearchAsync(new MentorSearchCriteria());
 
-        Assert.Equal("High Rated", results[0].DisplayName);
+        Assert.Equal("High Rated", result.Items[0].DisplayName);
     }
 
     [Fact]
@@ -56,10 +71,10 @@ public sealed class MentorSearchServiceTests
         var (service, repo) = Build();
         repo.Seed(Mentor("Cheap", 15m, 4), Mentor("Expensive", 80m, 5));
 
-        var results = await service.SearchAsync(new MentorSearchCriteria { MaxHourlyRate = 20m });
+        var result = await service.SearchAsync(new MentorSearchCriteria { MaxHourlyRate = 20m });
 
-        Assert.Single(results);
-        Assert.Equal("Cheap", results[0].DisplayName);
+        Assert.Single(result.Items);
+        Assert.Equal("Cheap", result.Items[0].DisplayName);
     }
 
     [Fact]
@@ -70,9 +85,9 @@ public sealed class MentorSearchServiceTests
         gone.SoftDelete(DateTimeOffset.UtcNow);
         repo.Seed(gone, Mentor("Present", 20m, 4));
 
-        var results = await service.SearchAsync(new MentorSearchCriteria());
+        var result = await service.SearchAsync(new MentorSearchCriteria());
 
-        Assert.Single(results);
-        Assert.Equal("Present", results[0].DisplayName);
+        Assert.Single(result.Items);
+        Assert.Equal("Present", result.Items[0].DisplayName);
     }
 }
