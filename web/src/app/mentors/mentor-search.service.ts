@@ -1,16 +1,16 @@
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
 import { Observable, catchError, map, of, retry, shareReplay, timer } from 'rxjs';
-import { MentorFilters, MentorSearchResult } from '../core/models';
+import { MentorFilters, MentorSearchResult, PagedResult } from '../core/models';
 
 @Injectable({ providedIn: 'root' })
 export class MentorSearchService {
   private readonly http = inject(HttpClient);
   private readonly baseUrl = '/api/mentors';
 
-  search(filters: MentorFilters): Observable<readonly MentorSearchResult[]> {
+  search(filters: MentorFilters): Observable<PagedResult<MentorSearchResult>> {
     return this.http
-      .get<MentorSearchResult[]>(this.baseUrl, { params: this.toParams(filters) })
+      .get<PagedResult<MentorSearchResult>>(this.baseUrl, { params: this.toParams(filters) })
       .pipe(
         retry({ count: 2, delay: (_, attempt) => timer(attempt * 500) }),
         catchError(() => of(this.emptyPage(filters.pageSize ?? 20))),
@@ -43,4 +43,7 @@ export class MentorSearchService {
     return params;
   }
 
+  private emptyPage(pageSize: number): PagedResult<MentorSearchResult> {
+    return { items: [], page: 1, pageSize, total: 0, totalPages: 0, hasNext: false, hasPrevious: false };
+  }
 }
