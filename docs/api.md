@@ -44,11 +44,6 @@ Search active mentors.
 | Status | When |
 | --- | --- |
 | 200 | Always, including zero results |
-| 429 | Over 60 requests in the current minute. `Retry-After` holds the seconds left. |
-
-`distanceKm` is only populated when the caller supplied an origin. The HTTP surface does
-not take one yet, so it is `null` from this endpoint. The service layer supports it,
-see `MentorSearchCriteria.Near`.
 
 Results are ordered by rating descending, then by distance ascending.
 
@@ -96,3 +91,10 @@ A decline without a reason is rejected by the domain, because the student sees i
 
 Liveness only. No dependency is checked, so a `200` here means the process is up, not
 that the database is reachable.
+
+## Versioning
+
+The URL has no version segment. Breaking changes go out in a major release with a
+migration note, announced in Discussions a sprint ahead. Version 3.0 changed the search
+response from a bare array to the envelope above, see
+[ADR 0003](adr/0003-paged-envelope.md).
