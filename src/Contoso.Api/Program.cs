@@ -1,11 +1,13 @@
 using Contoso.Application.Abstractions;
 using Contoso.Application.Matching;
 using Contoso.Application.Mentors;
+using Contoso.Infrastructure.Caching;
 using Contoso.Infrastructure.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddSingleton(TimeProvider.System);
+builder.Services.AddSingleton<ICacheStore, InMemoryCacheStore>();
 builder.Services.AddSingleton<IMentorRepository, InMemoryMentorRepository>();
 builder.Services.AddSingleton<IMatchRequestRepository, InMemoryMatchRequestRepository>();
 builder.Services.AddScoped<MentorSearchService>();
