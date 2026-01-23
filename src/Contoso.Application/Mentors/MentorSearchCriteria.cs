@@ -13,4 +13,9 @@ public sealed record MentorSearchCriteria
     public double? WithinKm { get; init; }
     public int Page { get; init; } = 1;
     public int PageSize { get; init; } = 20;
+
+    public string CacheKey =>
+        string.Join(':', "mentors", Subject?.ToString() ?? "any", MeetingType?.ToString() ?? "any",
+                    MaxHourlyRate?.ToString("0.##") ?? "any", MinimumRating?.ToString("0.#") ?? "any",
+                    WithinKm?.ToString("0") ?? "any", Page, PageSize);
 }

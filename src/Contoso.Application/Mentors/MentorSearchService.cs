@@ -5,9 +5,11 @@ using Contoso.Domain.ValueObjects;
 
 namespace Contoso.Application.Mentors;
 
-public sealed class MentorSearchService(IMentorRepository repository)
+public sealed class MentorSearchService(IMentorRepository repository, ICacheStore cache)
 {
     public const int MaxPageSize = 100;
+    private static readonly TimeSpan CacheTtl = TimeSpan.FromSeconds(60);
+
     public async Task<PagedResult<MentorSearchResult>> SearchAsync(
         MentorSearchCriteria criteria, CancellationToken ct = default)
     {
@@ -19,6 +21,12 @@ public sealed class MentorSearchService(IMentorRepository repository)
                 nameof(criteria), $"PageSize must be between 1 and {MaxPageSize}.");
         }
 
+        var cached = await cache.GetAsync<PagedResult<MentorSearchResult>>(criteria.CacheKey, ct);
+        if (cached is not null)
+        {
+            return cached;
+        }
+
         var mentors = await repository.SearchAsync(criteria, ct);
         var total = await repository.CountAsync(criteria, ct);
 
@@ -28,10 +36,11 @@ public sealed class MentorSearchService(IMentorRepository repository)
             .Where(r => criteria.MinimumRating is null || r.Rating >= criteria.MinimumRating)
             .Where(r => criteria.WithinKm is null || r.DistanceKm is null || r.DistanceKm <= criteria.WithinKm)
             .OrderByDescending(r => r.Rating)
-            .ThenBy(r => r.DistanceKm ?? double.MaxValue)
             .ToList();
 
-        return new PagedResult<MentorSearchResult>(items, criteria.Page, criteria.PageSize, total);
+        var result = new PagedResult<MentorSearchResult>(items, criteria.Page, criteria.PageSize, total);
+        await cache.SetAsync(criteria.CacheKey, result, CacheTtl, ct);
+        return result;
     }
 
     private static MentorSearchResult Project(Mentor mentor, Address? origin) => new(
