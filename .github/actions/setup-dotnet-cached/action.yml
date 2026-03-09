@@ -1,0 +1,32 @@
+name: Set up .NET with a warm NuGet cache
+description: Installs the SDK pinned in global.json and restores the NuGet cache.
+
+inputs:
+  cache-key-suffix:
+    description: Extra value mixed into the cache key.
+    required: false
+    default: ''
+
+outputs:
+  cache-hit:
+    description: Whether the NuGet cache was restored.
+    value: ${{ steps.cache.outputs.cache-hit }}
+
+runs:
+  using: composite
+  steps:
+    - uses: actions/setup-dotnet@v4
+      with:
+        global-json-file: global.json
+
+    - id: cache
+      uses: actions/cache@v4
+      with:
+        path: ~/.nuget/packages
+        key: nuget-${{ runner.os }}-${{ hashFiles('**/*.csproj') }}-${{ inputs.cache-key-suffix }}
+        restore-keys: |
+          nuget-${{ runner.os }}-${{ hashFiles('**/*.csproj') }}-
+          nuget-${{ runner.os }}-
+
+    - shell: bash
+      run: dotnet restore Contoso.sln
