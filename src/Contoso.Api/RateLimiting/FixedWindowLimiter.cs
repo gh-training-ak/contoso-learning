@@ -1,25 +1,23 @@
+using System.Collections.Concurrent;
+
 namespace Contoso.Api.RateLimiting;
 
 public sealed record RateLimitOptions(int PermitLimit, TimeSpan Window);
 
 public sealed class FixedWindowLimiter(RateLimitOptions options, TimeProvider clock)
 {
-    private readonly Dictionary<string, Bucket> _buckets = new();
+    private readonly ConcurrentDictionary<string, Bucket> _buckets = new();
 
     public bool TryAcquire(string clientId)
     {
         var now = clock.GetUtcNow();
 
-        if (!_buckets.TryGetValue(clientId, out var bucket) || now - bucket.WindowStart >= options.Window)
-        {
-            bucket = new Bucket(1, now);
-        }
-        else
-        {
-            bucket = bucket with { Count = bucket.Count + 1 };
-        }
-
-        _buckets[clientId] = bucket;
+        var bucket = _buckets.AddOrUpdate(
+            clientId,
+            _ => new Bucket(1, now),
+            (_, existing) => now - existing.WindowStart >= options.Window
+                ? new Bucket(1, now)
+                : existing with { Count = existing.Count + 1 });
 
         return bucket.Count <= options.PermitLimit;
     }
