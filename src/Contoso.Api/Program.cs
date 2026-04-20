@@ -1,3 +1,4 @@
+using Contoso.Api.RateLimiting;
 using Contoso.Application.Abstractions;
 using Contoso.Application.Matching;
 using Contoso.Application.Mentors;
@@ -12,6 +13,8 @@ builder.Services.AddSingleton<IMentorRepository, InMemoryMentorRepository>();
 builder.Services.AddSingleton<IMatchRequestRepository, InMemoryMatchRequestRepository>();
 builder.Services.AddScoped<MentorSearchService>();
 builder.Services.AddScoped<MatchRequestService>();
+builder.Services.AddSingleton(new RateLimitOptions(60, TimeSpan.FromMinutes(1)));
+builder.Services.AddSingleton<FixedWindowLimiter>();
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
