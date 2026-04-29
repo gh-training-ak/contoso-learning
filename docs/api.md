@@ -44,6 +44,11 @@ Search active mentors.
 | Status | When |
 | --- | --- |
 | 200 | Always, including zero results |
+| 429 | Over 60 requests in the current minute. `Retry-After` holds the seconds left. |
+
+`distanceKm` is only populated when the caller supplied an origin. The HTTP surface does
+not take one yet, so it is `null` from this endpoint. The service layer supports it,
+see `MentorSearchCriteria.Near`.
 
 Results are ordered by rating descending, then by distance ascending.
 
