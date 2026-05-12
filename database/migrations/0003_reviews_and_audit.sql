@@ -14,6 +14,20 @@ CREATE TABLE learning.Review
 );
 GO
 
+CREATE TABLE learning.AuditEntry
+(
+    AuditEntryId BIGINT IDENTITY(1, 1) NOT NULL CONSTRAINT PK_AuditEntry PRIMARY KEY,
+    Actor        NVARCHAR(256)  NOT NULL,
+    Action       NVARCHAR(64)   NOT NULL,
+    Subject      NVARCHAR(256)  NOT NULL,
+    Detail       NVARCHAR(MAX)  NULL,
+    OccurredAtUtc DATETIME2(3)  NOT NULL CONSTRAINT DF_AuditEntry_Occurred DEFAULT SYSUTCDATETIME()
+);
+GO
+
+CREATE INDEX IX_AuditEntry_Occurred ON learning.AuditEntry (OccurredAtUtc DESC);
+GO
+
 CREATE OR ALTER VIEW learning.MentorRating
 AS
 SELECT
