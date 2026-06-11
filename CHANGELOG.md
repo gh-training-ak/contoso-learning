@@ -3,6 +3,15 @@
 Notable changes per release. Generated notes live on the GitHub releases page, this
 file carries the summary and the migration notes.
 
+## [3.1.0] - 2026-06-11
+
+### Added
+- Fixed window rate limiting, 100 requests per minute, `429` with `Retry-After` (#355)
+- Audit sink records search and match request activity (#361)
+
+### Security
+- Push protection enabled on the repository, secret scanning alerts triaged
+
 ## [3.0.0] - 2026-03-02
 
 ### Breaking
