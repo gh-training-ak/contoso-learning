@@ -1,0 +1,22 @@
+changelog:
+  exclude:
+    labels:
+      - skip-changelog
+      - dependencies
+    authors:
+      - dependabot
+      - github-actions
+
+  categories:
+    - title: Breaking changes
+      labels: [breaking-change]
+    - title: Features
+      labels: [kind/feature]
+    - title: Fixes
+      labels: [kind/bug]
+    - title: Performance
+      labels: [area/performance]
+    - title: Documentation
+      labels: [documentation]
+    - title: Other changes
+      labels: ['*']
