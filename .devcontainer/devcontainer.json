@@ -1,0 +1,31 @@
+{
+  "name": "Contoso Learning",
+  "image": "mcr.microsoft.com/devcontainers/dotnet:1-8.0-jammy",
+  "features": {
+    "ghcr.io/devcontainers/features/node:1": { "version": "20" },
+    "ghcr.io/devcontainers/features/azure-cli:1": {},
+    "ghcr.io/devcontainers/features/terraform:1": { "version": "1.9.8" },
+    "ghcr.io/devcontainers/features/github-cli:1": {},
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-dotnettools.csdevkit",
+        "angular.ng-template",
+        "hashicorp.terraform",
+        "ms-mssql.mssql",
+        "github.vscode-pull-request-github",
+        "github.copilot",
+        "editorconfig.editorconfig"
+      ],
+      "settings": {
+        "editor.formatOnSave": true,
+        "dotnet.defaultSolution": "Contoso.sln"
+      }
+    }
+  },
+  "forwardPorts": [8080, 4200, 1433, 6379],
+  "postCreateCommand": "dotnet restore Contoso.sln && cd web && npm ci",
+  "remoteUser": "vscode"
+}
