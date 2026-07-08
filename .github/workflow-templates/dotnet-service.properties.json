@@ -1,0 +1,7 @@
+{
+  "name": ".NET service build",
+  "description": "Restore, build and test a .NET service on every push and pull request.",
+  "iconName": "example-icon",
+  "categories": ["C#", ".NET"],
+  "filePatterns": ["\\.csproj$"]
+}
