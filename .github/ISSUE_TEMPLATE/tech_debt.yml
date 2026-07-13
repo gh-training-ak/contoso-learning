@@ -1,0 +1,25 @@
+name: Technical debt
+description: Record a shortcut we knowingly took.
+title: "[debt]: "
+labels: [kind/debt]
+
+body:
+  - type: textarea
+    id: shortcut
+    attributes:
+      label: What shortcut did we take
+    validations:
+      required: true
+
+  - type: textarea
+    id: cost
+    attributes:
+      label: What does it cost us now
+    validations:
+      required: true
+
+  - type: dropdown
+    id: effort
+    attributes:
+      label: Effort to pay it down
+      options: [Hours, A day, A sprint, More than a sprint]
