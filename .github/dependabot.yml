@@ -5,16 +5,56 @@ updates:
     directory: /
     schedule:
       interval: weekly
+      day: monday
+      time: '06:00'
+      timezone: Europe/London
+    open-pull-requests-limit: 5
     labels: [dependencies, area/api]
+    reviewers:
+      - gh-training-ak/backend-team
+    commit-message:
+      prefix: chore
+      include: scope
+    groups:
+      microsoft-extensions:
+        patterns: ['Microsoft.Extensions.*']
+        update-types: [minor, patch]
+      test-tooling:
+        patterns: ['xunit*', 'coverlet*', 'Microsoft.NET.Test.Sdk']
+    ignore:
+      - dependency-name: 'Microsoft.EntityFrameworkCore*'
+        update-types: [version-update:semver-major]
 
   - package-ecosystem: npm
     directory: /web
     schedule:
       interval: weekly
+      day: monday
+    open-pull-requests-limit: 5
     labels: [dependencies, area/web]
+    groups:
+      angular:
+        patterns: ['@angular/*', '@angular-devkit/*']
+      linting:
+        patterns: ['eslint*', 'prettier']
 
   - package-ecosystem: github-actions
     directory: /
     schedule:
       interval: weekly
     labels: [dependencies, area/ci]
+    groups:
+      actions:
+        patterns: ['*']
+
+  - package-ecosystem: docker
+    directory: /deploy/docker
+    schedule:
+      interval: monthly
+    labels: [dependencies, area/infrastructure]
+
+  - package-ecosystem: terraform
+    directory: /infra/terraform
+    schedule:
+      interval: monthly
+    labels: [dependencies, area/infrastructure]
