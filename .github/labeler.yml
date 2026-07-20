@@ -18,3 +18,14 @@ area/database:
   - changed-files:
       - any-glob-to-any-file: ['database/**']
 
+area/ci:
+  - changed-files:
+      - any-glob-to-any-file: ['.github/workflows/**']
+
+documentation:
+  - changed-files:
+      - any-glob-to-any-file: ['docs/**', '**/*.md']
+
+tests:
+  - changed-files:
+      - any-glob-to-any-file: ['tests/**', '**/*.spec.ts']
