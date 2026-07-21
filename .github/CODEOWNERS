@@ -1,9 +1,22 @@
 # Ownership is by directory. The last matching rule wins, so order matters.
+# Every pull request needs at least one owner approval, enforced by the ruleset on main.
 
 *                               @gh-training-ak/platform-team
 
-/src/                           @gh-training-ak/backend-team
+/src/Contoso.Domain/            @gh-training-ak/backend-team
+/src/Contoso.Application/       @gh-training-ak/backend-team
+/src/Contoso.Infrastructure/    @gh-training-ak/backend-team @gh-training-ak/data-team
+/src/Contoso.Api/               @gh-training-ak/backend-team
+
 /web/                           @gh-training-ak/frontend-team
+/web/src/app/core/              @gh-training-ak/frontend-team @gh-training-ak/platform-team
+
 /database/                      @gh-training-ak/data-team
-/infra/                         @gh-training-ak/platform-team
+/infra/                         @gh-training-ak/platform-team @gh-training-ak/sre-team
+/deploy/                        @gh-training-ak/sre-team
+
+/tests/                         @gh-training-ak/qa-team
 /.github/workflows/             @gh-training-ak/platform-team
+/.github/CODEOWNERS             @gh-training-ak/platform-team
+/docs/adr/                      @gh-training-ak/platform-team
+/SECURITY.md                    @gh-training-ak/platform-team
