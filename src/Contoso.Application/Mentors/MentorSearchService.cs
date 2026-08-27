@@ -36,6 +36,7 @@ public sealed class MentorSearchService(IMentorRepository repository, ICacheStor
             .Where(r => criteria.MinimumRating is null || r.Rating >= criteria.MinimumRating)
             .Where(r => criteria.WithinKm is null || r.DistanceKm is null || r.DistanceKm <= criteria.WithinKm)
             .OrderByDescending(r => r.Rating)
+            .ThenBy(r => r.DistanceKm ?? double.MaxValue)
             .ToList();
 
         var result = new PagedResult<MentorSearchResult>(items, criteria.Page, criteria.PageSize, total);
