@@ -43,3 +43,11 @@ network, in under a second.
   that creates an invalid review.
 - `ScheduleSlot` rejects a slot that ends before it starts, including slots that would
   cross midnight. Mentors who teach late split the slot.
+
+## What is deliberately missing
+
+- No authentication. The API trusts a header for the caller identity. Real auth is the
+  subject of a different workshop.
+- No EF Core. Repositories are in memory. The SQL schema exists and is the shape the
+  real repositories would target.
+- No background jobs. The audit sink writes synchronously to memory.
