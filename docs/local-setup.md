@@ -44,3 +44,33 @@ There is no Swagger UI. `docs/api.md` is the contract.
 
 Repositories are in memory and start empty, so a search returns zero results until you
 post something. That is deliberate: a seeded repository hides ordering bugs.
+
+## Running everything
+
+```bash
+export SQL_PASSWORD='Choose-A-Strong-One-1'      # PowerShell: $env:SQL_PASSWORD='...'
+docker compose -f deploy/docker/docker-compose.yml up --build
+```
+
+Compose refuses to start if `SQL_PASSWORD` is unset. That is deliberate, there is no
+default password anywhere in this repository.
+
+## Applying the schema
+
+```bash
+for f in database/migrations/*.sql; do
+  sqlcmd -S localhost,1433 -U sa -P "$SQL_PASSWORD" -C -d Contoso -i "$f"
+done
+```
+
+Migrations are forward only and numbered. Run them in order.
+
+## Common problems
+
+| Symptom | Cause | Fix |
+| --- | --- | --- |
+| `MSB1009` on build | Solution file not where you think | Run from the repository root |
+| Tests pass locally, fail in CI | Culture dependent formatting | CI runs invariant culture, use `CultureInfo.InvariantCulture` |
+| `npm ci` fails | Lock file out of date with `package.json` | `npm install`, commit the lock file |
+| Compose sql container restarts | Password does not meet complexity | Eight characters, upper, lower, digit |
+| `terraform init` asks for credentials | Not signed in | `az login`, then `az account set --subscription ...` |
