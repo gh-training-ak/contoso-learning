@@ -3,6 +3,18 @@
 Notable changes per release. Generated notes live on the GitHub releases page, this
 file carries the summary and the migration notes.
 
+## [3.2.0] - 2026-09-24
+
+### Added
+- Mentor availability calendar with overlap detection (#412)
+- `GET /api/mentors/subjects` so the front end stops hard coding the list (#431)
+
+### Changed
+- Search ordering now breaks ties by review count (#428)
+
+### Fixed
+- Distance filter no longer drops mentors sitting exactly on the radius (#434)
+
 ## [3.1.0] - 2026-06-11
 
 ### Added
