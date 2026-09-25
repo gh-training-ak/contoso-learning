@@ -31,7 +31,7 @@ public sealed class FixedWindowLimiter(RateLimitOptions options, TimeProvider cl
 
         var elapsed = clock.GetUtcNow() - bucket.WindowStart;
         var remaining = options.Window - elapsed;
-        return remaining > TimeSpan.Zero ? remaining : TimeSpan.Zero;
+        return remaining > TimeSpan.Zero ? remaining : TimeSpan.FromSeconds(1);
     }
 
     private sealed record Bucket(int Count, DateTimeOffset WindowStart);
