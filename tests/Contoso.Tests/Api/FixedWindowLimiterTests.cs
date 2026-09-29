@@ -57,4 +57,16 @@ public sealed class FixedWindowLimiterTests
         Assert.True(limiter.TryAcquire("first"));
         Assert.True(limiter.TryAcquire("second"));
     }
+
+    [Fact]
+    public void RetryAfterIsNeverZeroWhileLimited()
+    {
+        var clock = new FakeTimeProvider(DateTimeOffset.UnixEpoch);
+        var limiter = new FixedWindowLimiter(new RateLimitOptions(1, TimeSpan.FromMinutes(1)), clock);
+
+        limiter.TryAcquire("boundary");
+        clock.Advance(TimeSpan.FromSeconds(60));
+
+        Assert.False(limiter.RetryAfter("boundary") == TimeSpan.Zero && !limiter.TryAcquire("boundary"));
+    }
 }
