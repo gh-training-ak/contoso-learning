@@ -17,8 +17,8 @@ public sealed class Mentor : Entity
     public bool AcceptsOnline { get; set; } = true;
     public bool AcceptsInPerson { get; set; }
 
-    public List<Review> Reviews => _reviews;
-    public List<Announcement> Announcements => _announcements;
+    public IReadOnlyCollection<Review> Reviews => _reviews.AsReadOnly();
+    public IReadOnlyCollection<Announcement> Announcements => _announcements.AsReadOnly();
 
     public decimal AverageRating =>
         _reviews.Count == 0 ? 0m : Math.Round(_reviews.Average(r => (decimal)r.Score), 2);
