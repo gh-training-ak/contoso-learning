@@ -39,3 +39,9 @@ public sealed class AddressTests
         Assert.InRange(distance, 0.1, 3.0);
     }
 
+    [Fact]
+    public void NullOtherAddressThrows()
+    {
+        Assert.Throws<ArgumentNullException>(() => CityHall.DistanceKmTo(null!));
+    }
+}
