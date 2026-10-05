@@ -14,3 +14,13 @@ reversed gets a new record that supersedes the old one, and the old one is marke
 | [0007](0007-trunk-based-with-release-branches.md) | Trunk based with release branches | Accepted |
 
 Use [the template](0000-template.md). Keep it to one page.
+
+## Proposed and blocked
+
+| Number | Decision | Status |
+| --- | --- | --- |
+| 0008 | Trusting forwarded headers | Proposed, on `feature/x-forwarded-for` |
+
+A record that is reversed keeps its number and gains a `Superseded by NNNN` line at
+the top. We do not delete them. The reason we changed our mind is usually more useful
+than the decision itself.
