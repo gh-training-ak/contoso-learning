@@ -47,6 +47,16 @@ public sealed class OrderingStabilityTests
     }
 
     [Fact]
+    public async Task MentorWithNoReviewsSortsBelowARatedMentor()
+    {
+        var service = Service(Rated("Unrated"), Rated("Rated", 3));
+
+        var result = await service.SearchAsync(new MentorSearchCriteria { PageSize = 10 });
+
+        Assert.Equal("Rated", result.Items[0].DisplayName);
+    }
+
+    [Fact]
     public async Task EveryMentorAppearsExactlyOnceAcrossPages()
     {
         var mentors = Enumerable.Range(1, 9).Select(i => Rated($"Mentor {i:00}", 4, 5)).ToArray();
