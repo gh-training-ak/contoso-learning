@@ -40,3 +40,9 @@ real ceiling is 300 a minute, which is still two orders of magnitude below what 
 - Revisit when we put Front Door in front of the API, and move the limit there.
 - The limiter is memory bound. Entries are swept on a timer, not on every request.
 - Load tests must account for the per instance behaviour or they will report wrongly.
+
+## Known gap
+
+The limiter keys on `RemoteIpAddress`. Behind App Service the real client address is in
+`X-Forwarded-For`, so today every request from the front door counts as one client. This
+is tracked and has to be fixed before the limiter is worth anything in production.
