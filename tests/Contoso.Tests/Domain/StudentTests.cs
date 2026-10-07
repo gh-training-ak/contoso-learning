@@ -33,4 +33,19 @@ public sealed class StudentTests
     {
         Assert.False(Year(null).RequiresGuardianConsent);
     }
+
+    [Fact]
+    public void SoftDeletedStudentIsNotActive()
+    {
+        var student = Year(10);
+        student.SoftDelete(DateTimeOffset.UtcNow);
+
+        Assert.False(student.IsActive);
+    }
+
+    [Fact]
+    public void TwoStudentsWithDifferentIdsAreNotEqual()
+    {
+        Assert.NotEqual(Year(10), Year(10));
+    }
 }
