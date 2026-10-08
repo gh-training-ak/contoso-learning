@@ -1,0 +1,93 @@
+:root {
+  color-scheme: light dark;
+  --surface: Canvas;
+  --ink: CanvasText;
+  --muted: color-mix(in srgb, CanvasText 55%, Canvas);
+  --line: color-mix(in srgb, CanvasText 15%, Canvas);
+  --accent: #0b5cad;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font: 16px/1.5 'Segoe UI', system-ui, sans-serif;
+  background: var(--surface);
+  color: var(--ink);
+}
+
+.mentor-list {
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  align-items: end;
+  padding: 1rem 0 1.5rem;
+  border-bottom: 1px solid var(--line);
+
+  label {
+    display: grid;
+    gap: 0.25rem;
+    font-size: 0.875rem;
+    color: var(--muted);
+  }
+
+  input,
+  select {
+    padding: 0.5rem;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    background: var(--surface);
+    color: var(--ink);
+  }
+
+  button {
+    padding: 0.55rem 1.25rem;
+    border: 0;
+    border-radius: 4px;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: default;
+    }
+  }
+}
+
+.summary {
+  color: var(--muted);
+  font-size: 0.875rem;
+}
+
+.muted {
+  color: var(--muted);
+}
+
+ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  li {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: baseline;
+    padding: 0.875rem 0;
+    border-bottom: 1px solid var(--line);
+
+    span {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+  }
+}

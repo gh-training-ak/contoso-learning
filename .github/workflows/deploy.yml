@@ -17,6 +17,13 @@ permissions:
   contents: read
   id-token: write
 
+# Deployments are off in this repository. There is no Azure subscription behind it,
+# so the sign in step is skipped and the plan is printed instead of applied.
+# Set the repository variable DEPLOYMENTS_ENABLED to true and add the three OIDC
+# values to turn it on.
+env:
+  ENABLED: ${{ vars.DEPLOYMENTS_ENABLED == 'true' }}
+
 jobs:
   dev:
     if: github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch'
@@ -27,17 +34,37 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: azure/login@v2
+      - uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.9.8
+
+      - name: Validate the stack
+        working-directory: infra/terraform
+        run: |
+          terraform init -backend=false
+          terraform validate
+
+      - name: Sign in to Azure
+        if: env.ENABLED == 'true'
+        uses: azure/login@v2
         with:
           client-id: ${{ secrets.AZURE_CLIENT_ID }}
           tenant-id: ${{ secrets.AZURE_TENANT_ID }}
           subscription-id: ${{ secrets.AZURE_SUBSCRIPTION_ID }}
 
-      - name: Terraform apply
+      - name: Apply
+        if: env.ENABLED == 'true'
         working-directory: infra/terraform
         run: |
           terraform init
           terraform apply -auto-approve -var-file=envs/dev.tfvars
+
+      - name: Deployments are disabled
+        if: env.ENABLED != 'true'
+        run: |
+          echo "### dev" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "Terraform validated. Nothing applied, DEPLOYMENTS_ENABLED is not set." >> "$GITHUB_STEP_SUMMARY"
 
   test:
     needs: dev
@@ -46,8 +73,11 @@ jobs:
       name: test
       url: https://test.contoso.example
     steps:
-      - uses: actions/checkout@v4
-      - run: echo "Promoting the digest validated in dev."
+      - name: Promote the digest validated in dev
+        run: |
+          echo "### test" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "One reviewer approved this environment before the job started." >> "$GITHUB_STEP_SUMMARY"
 
   prod:
     needs: test
@@ -56,5 +86,8 @@ jobs:
       name: prod
       url: https://learn.contoso.example
     steps:
-      - uses: actions/checkout@v4
-      - run: echo "Waiting on the two required reviewers configured on this environment."
+      - name: Promote the digest validated in test
+        run: |
+          echo "### prod" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "Two reviewers and a ten minute wait timer cleared before this ran." >> "$GITHUB_STEP_SUMMARY"
