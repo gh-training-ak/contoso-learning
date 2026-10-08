@@ -128,8 +128,8 @@ release workflow which builds the container, attests provenance and generates th
 | Environment | Branch | Approval | URL |
 | --- | --- | --- | --- |
 | dev | `main` | None, deploys on every green build | https://dev.contoso.example |
-| test | `main` | One reviewer | https://test.contoso.example |
-| prod | tags only | Two reviewers, 10 minute wait timer | https://learn.contoso.example |
+| test | `main` | Approval from the platform team | https://test.contoso.example |
+| prod | tags only | Approval from the platform or SRE team, 10 minute wait timer | https://learn.contoso.example |
 
 Secrets live in Key Vault. The App Service reads them with its managed identity. Nothing
 sensitive is stored as a GitHub secret except the three OIDC values for `azure/login`.
