@@ -77,7 +77,7 @@ jobs:
         run: |
           echo "### test" >> "$GITHUB_STEP_SUMMARY"
           echo "" >> "$GITHUB_STEP_SUMMARY"
-          echo "One reviewer approved this environment before the job started." >> "$GITHUB_STEP_SUMMARY"
+          echo "The platform team approved this environment before the job started." >> "$GITHUB_STEP_SUMMARY"
 
   prod:
     needs: test
@@ -90,4 +90,4 @@ jobs:
         run: |
           echo "### prod" >> "$GITHUB_STEP_SUMMARY"
           echo "" >> "$GITHUB_STEP_SUMMARY"
-          echo "Two reviewers and a ten minute wait timer cleared before this ran." >> "$GITHUB_STEP_SUMMARY"
+          echo "An approval and a ten minute wait timer cleared before this ran." >> "$GITHUB_STEP_SUMMARY"
